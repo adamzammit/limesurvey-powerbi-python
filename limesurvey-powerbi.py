@@ -19,7 +19,7 @@ lime.open(password=limepasswd)
 result = lime.survey.export_responses(survey_id=surveyid,document_type='csv',heading_type='full',response_type='long')
 #Convert data to a pandas data frame
 surveydata = pd.read_csv(io.StringIO(base64.b64decode(result).decode("utf-8")),sep=';')
-#print(surveydata)
+print(surveydata)
 #Read using the token list participants API call
 attlist = []
 for x in range(1,255):
@@ -35,8 +35,8 @@ for x in result:
     nl.append(items)
 #Convert data to a pandas data frame
 tokendata = pd.DataFrame(nl)
-#print(tokendata)
+print(tokendata)
 mergeddata = tokendata.merge(right=surveydata,how='outer',left_on='token',right_on='Token')
-#print(mergeddata)
+print(mergeddata)
 #Disconnect
 lime.close()
