@@ -5,10 +5,10 @@ import base64 #To convert base64 encoded data
 import io #To convert a string to a buffer for pandas to read
 
 #Limesurvey details - change these to match your Survey
-remotecontrolurl = "http://localhost/limesurvey/index.php/admin/remotecontrol"
+remotecontrolurl = "http://localhost/index.php/admin/remotecontrol"
 limeuser = "admin"
 limepasswd = "password"
-surveyid = "1"  
+surveyid = "1"
 
 #Code to call the LimeSurvey API to extract data
  
@@ -25,18 +25,21 @@ attlist = []
 for x in range(1,255):
     attlist.append("attribute_" + str(x))
 result = lime.token.list_participants(survey_id=surveyid,start=0,limit=100000,attributes=attlist)
-#Flatten out participant_info and add attributes
-nl = []
-for x in result:
-    items = {'tid': x['tid'], 'token': x['token'], 'firstname': x['participant_info']['firstname'], 'lastname': x['participant_info']['lastname'], 'email': x['participant_info']['email']}
-    for att in attlist:
-        if att in x:
-            items[att] = x[att]
-    nl.append(items)
-#Convert data to a pandas data frame
-tokendata = pd.DataFrame(nl)
-print(tokendata)
-mergeddata = tokendata.merge(right=surveydata,how='outer',left_on='token',right_on='Token')
-print(mergeddata)
+if('status' not in result):
+    #We have token data so include and merge
+    #Flatten out participant_info and add attributes
+    nl = []
+    for x in result:
+        print(x)
+        items = {'tid': x['tid'], 'token': x['token'], 'firstname': x['participant_info']['firstname'], 'lastname': x['participant_info']['lastname'], 'email': x['participant_info']['email']}
+        for att in attlist:
+            if att in x:
+                items[att] = x[att]
+        nl.append(items)
+    #Convert data to a pandas data frame
+    tokendata = pd.DataFrame(nl)
+    print(tokendata)
+    mergeddata = tokendata.merge(right=surveydata,how='outer',left_on='token',right_on='Token')
+    print(mergeddata)
 #Disconnect
 lime.close()
