@@ -10,6 +10,9 @@ limeuser = "admin"
 limepasswd = "password"
 surveyid = "1"
 
+#Output details - change this to match your locale (i.e change the "." to a "," if your locale requires a "," as a decimal separator)
+decimalseparator = "."
+
 #Code to call the LimeSurvey API to extract data
  
 #Connect to LimeSurvey
@@ -19,7 +22,7 @@ lime.open(password=limepasswd)
 result = lime.survey.export_responses(survey_id=surveyid,document_type='csv',heading_type='full',response_type='long')
 #Convert data to a pandas data frame
 surveydata = pd.read_csv(io.StringIO(base64.b64decode(result).decode("utf-8")),sep=';')
-print(surveydata)
+print(surveydata.to_string(decimal=decimalseparator))
 #Read using the token list participants API call
 attlist = []
 for x in range(1,255):
@@ -40,6 +43,6 @@ if('status' not in result):
     tokendata = pd.DataFrame(nl)
     print(tokendata)
     mergeddata = tokendata.merge(right=surveydata,how='outer',left_on='token',right_on='Token')
-    print(mergeddata)
+    print(mergeddata.to_string(decimal=decimalseparator))
 #Disconnect
 lime.close()
