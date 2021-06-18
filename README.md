@@ -12,4 +12,5 @@ A Python 3 script for reading data from [LimeSurvey](https://limesurvey.org) in 
 ```
 
 3. Update the script to include your LimeSurvey JSON-RPC URL, username, password and survey id (Hint: make a new copy of this script for each survey)
-4. Run the script from the Power BI desktop using Data Import then "Python Script"
+4. If your computer running Power BI expects the decimal separator to be a "," instead of a ".", please change the decimalseparator line in the script to reflect this
+5. Run the script from the Power BI desktop using Data Import then "Python Script"
