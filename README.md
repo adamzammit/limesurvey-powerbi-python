@@ -8,7 +8,7 @@ A Python 3 script for reading data from [LimeSurvey](https://limesurvey.org) in 
 
 ```
     pip install pandas requests matplotlib
-    pip install git+https://github.com/ESchae/limesurveyrc2api
+    pip install https://github.com/ESchae/limesurveyrc2api/archive/refs/heads/master.zip
 ```
 
 3. Update the script to include your LimeSurvey JSON-RPC URL, username, password and survey id (Hint: make a new copy of this script for each survey)
